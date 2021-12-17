@@ -10,9 +10,12 @@ const BlogDetails = () => {
         fetch('http://localhost:8000/blogs/'+ blog.id, {
             method: 'DELETE'
         }).then(() => {
-            history.push('/');
+    history("../", { replace: true });
         })
     }
+	const editThis=()=>{
+		history(`../edit/${id}`,{replace:true});
+	}
 
     return ( 
         <div className="blog-details">
@@ -23,6 +26,9 @@ const BlogDetails = () => {
                 <p>Written by {blog.author}</p>
                 <div>{blog.body}</div>
                 <button onClick={handleClick}>Delete</button>
+                <button onClick={editThis}>Edit</button>
+
+				
             </article>
         </div>
      );

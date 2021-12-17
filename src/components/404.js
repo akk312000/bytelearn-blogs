@@ -5,8 +5,8 @@ const NotFound = () => {
     return ( 
         <div className="not-found">
             <h2>404 Error</h2>
-            <p>We cannot find that page!</p>
-            <Link to='/'>Take me back to Home</Link>
+            <p>Sorry we were not able to find that page!</p>
+            <Link to='/'>Go Back to Home</Link>
         </div>
      );
 }

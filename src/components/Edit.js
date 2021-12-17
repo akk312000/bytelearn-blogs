@@ -1,24 +1,32 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
-const Create = () => {
-  const [title, setTitle] = useState("");
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import useFetch from "./useFetch";
+
+const  Create = () => {
+
+  
+const [isPending,setIsPending]=useState(false);
+    const { id } = useParams();
+	const { data: blog, error } =  useFetch('http://localhost:8000/blogs/' + id);
+	const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
-  const [author, setAuthor] = useState("Anonymous");
-  const [isPending, setIsPending] = useState(false);
+  const [author, setAuthor] = useState("");
+	console.log(blog.title);
+   
   const history = useNavigate();
   const takemeBack = (e) => {
     e.preventDefault();
     history("../", { replace: true });
   };
-  const handleSubmit = (e) => {
+  const  handleSubmit =async (e) => {
     e.preventDefault();
     const blog = { title, body, author };
 
     setIsPending(true);
 
-    fetch("http://localhost:8000/blogs", {
-      method: "POST",
+   await fetch(`http://localhost:8000/blogs/${id}`, {
+      method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(blog),
     }).then(() => {
@@ -29,9 +37,10 @@ const Create = () => {
 
   return (
     <div className="create">
-      <h2>Add a New Blog</h2>
+      <h2>Edit </h2>
       <form onSubmit={handleSubmit}>
         <label>Title</label>
+		
         <input
           type="text"
           required
@@ -51,9 +60,9 @@ const Create = () => {
           value={author}
           onChange={(e) => setAuthor(e.target.value)}
         />
-        {!isPending && <button>Submit</button>}
+        {!isPending && <button>Edit</button>}
         {!isPending && <button onSubmit={takemeBack}> Cancel</button>}
-        {isPending && <button disabled>Adding a Blog</button>}
+        {isPending && <button disabled>Editing a Blog</button>}
       </form>
     </div>
   );
